@@ -1,0 +1,13 @@
+<div>
+  <input type="checkbox" 
+    [id]="id"
+    [name]="name || id"
+    [checked]="checked" 
+    [disabled]="disabled"
+    [indeterminate]="indeterminate"
+    [attr.aria-invalid]="invalid"
+    [attr.aria-checked]="indeterminate ? 'mixed' : 'checked'"
+    [attr.aria-required]="required ? required: null"
+    (change)="onChange($event)">
+    <app-label [for]="id">{{ label }}</app-label>
+</div>

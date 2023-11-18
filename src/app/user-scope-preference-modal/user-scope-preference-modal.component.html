@@ -1,0 +1,18 @@
+<div>
+  <div class="modal-header justify-content-center">
+    Header
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <app-select></app-select>
+    </div>
+    <div class="row">
+      <app-user-scope-tree [customScopeGroupPreferences]="customScopeGroupPreferences"></app-user-scope-tree>
+    </div>
+    <div class="row form-group"></div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+  <button type="button" class="btn btn-primary" (click)="hideModal()">Cancel</button>
+</div>
