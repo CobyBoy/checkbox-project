@@ -1,7 +1,12 @@
-import { Component, OnInit, Input, ChangeDetectorRef, AfterContentChecked, ChangeDetectionStrategy, ElementRef, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
-import { CustomScopeGroupPreferences, UserScopePreference } from '../api/scope';
+import { Component, Input, ChangeDetectorRef, AfterContentChecked, ChangeDetectionStrategy, ElementRef, ViewChildren, QueryList, AfterViewInit, Renderer2 } from '@angular/core';
+import { CustomScopeGroupPreferences } from '../api/scope';
 import { UniqueIdService } from '../unique-id.service';
 import { UserScopeChildComponent } from '../user-scope-child/user-scope-child.component';
+
+class Constants {
+  static checked: string = 'checked';
+  static indeterminate: string = 'indeterminate';
+}
 
 @Component({
   selector: 'app-user-scope-tree',
@@ -28,7 +33,6 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
     if (this.customScopeGroupPreferences && this.selectionChildComponent) {
       this.selectUnselectMainGroupCheckboxOnModalOpen(this.customScopeGroupPreferences, this.selectionChildComponent)
     } 
-    //this.cdRef.detectChanges();
   }
 
   ngAfterContentChecked() {
@@ -66,32 +70,29 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
 
   private updateChildCheckBoxProperties(scopesConfiguration: { isThereMoreThanOneScope: boolean, isOneScopeUnselected: boolean },
     group: CustomScopeGroupPreferences, inputChildGroupCheckbox: HTMLInputElement) {
-    const checked = 'checked';
-    const indeterminate = 'indeterminate';
-    const inputStates = { checked, indeterminate };
     if (scopesConfiguration.isThereMoreThanOneScope) {
-      this.updateInputChildGroupWhenThereIsOnlyOneScope(scopesConfiguration, group, inputChildGroupCheckbox, inputStates)
+      this.updateInputChildGroupWhenThereIsOnlyOneScope(scopesConfiguration, group, inputChildGroupCheckbox)
     }
     else {
-      this.renderer.setProperty(inputChildGroupCheckbox, checked, scopesConfiguration.isOneScopeUnselected);
+      this.renderer.setProperty(inputChildGroupCheckbox, Constants.checked, scopesConfiguration.isOneScopeUnselected);
     }
   }
 
   private updateInputChildGroupWhenThereIsOnlyOneScope(scopesConfiguration: { isThereMoreThanOneScope: boolean, isOneScopeUnselected: boolean },
-    group: CustomScopeGroupPreferences, inputChildGroupCheckbox: HTMLInputElement, inputStates: { checked: string, indeterminate: string }) {
+    group: CustomScopeGroupPreferences, inputChildGroupCheckbox: HTMLInputElement) {
     const areAllScopeUnselected = group.customScopePreference.every(g => !g.selected);
     if (scopesConfiguration.isOneScopeUnselected && !areAllScopeUnselected) {
-      this.renderer.setProperty(inputChildGroupCheckbox, inputStates.checked, false);
-      this.renderer.setProperty(inputChildGroupCheckbox, inputStates.indeterminate, true);
+      this.renderer.setProperty(inputChildGroupCheckbox, Constants.checked, false);
+      this.renderer.setProperty(inputChildGroupCheckbox, Constants.indeterminate, true);
     }
 
     else if (areAllScopeUnselected) {
-      this.renderer.setProperty(inputChildGroupCheckbox, inputStates.checked, false);
-      this.renderer.setProperty(inputChildGroupCheckbox, inputStates.indeterminate, false);
+      this.renderer.setProperty(inputChildGroupCheckbox, Constants.checked, false);
+      this.renderer.setProperty(inputChildGroupCheckbox, Constants.indeterminate, false);
     }
     else {
-      this.renderer.setProperty(inputChildGroupCheckbox, inputStates.checked, true);
-      this.renderer.setProperty(inputChildGroupCheckbox, inputStates.indeterminate, false);
+      this.renderer.setProperty(inputChildGroupCheckbox, Constants.checked, true);
+      this.renderer.setProperty(inputChildGroupCheckbox, Constants.indeterminate, false);
     }
   }
 
@@ -112,46 +113,44 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
     this.cdRef.markForCheck();
   }
 
-  private updateGroupCheckboxProperties(maingGroupUnselectionConfiguration: {
+  private updateGroupCheckboxProperties(mainGroupUnselectionConfiguration: {
     isOneMainGroupUnselected: boolean, areAllMainGroupUnselected: boolean
   },
     isOneChildrenUnselected: boolean, 
     areChildrenUnselected: boolean,
     mainGroupInput: HTMLInputElement
   ) {
-    const checked = 'checked';
-    const indeterminate = 'indeterminate';
-    if (maingGroupUnselectionConfiguration.isOneMainGroupUnselected &&
-      !maingGroupUnselectionConfiguration.areAllMainGroupUnselected) { 
+    if (mainGroupUnselectionConfiguration.isOneMainGroupUnselected &&
+      !mainGroupUnselectionConfiguration.areAllMainGroupUnselected) { 
       setTimeout(() => {
-        this.renderer.setProperty(mainGroupInput, indeterminate, true);
-        this.renderer.setProperty(mainGroupInput, checked, false)
+        this.renderer.setProperty(mainGroupInput, Constants.indeterminate, true);
+        this.renderer.setProperty(mainGroupInput, Constants.checked, false)
       });
     }
     
-    else if (maingGroupUnselectionConfiguration.areAllMainGroupUnselected && !isOneChildrenUnselected) {
-      this.renderer.setProperty(mainGroupInput, indeterminate, false);
-      this.renderer.setProperty(mainGroupInput, checked, false)
+    else if (mainGroupUnselectionConfiguration.areAllMainGroupUnselected && !isOneChildrenUnselected) {
+      this.renderer.setProperty(mainGroupInput, Constants.indeterminate, false);
+      this.renderer.setProperty(mainGroupInput, Constants.checked, false)
     }
-    else if (isOneChildrenUnselected && !maingGroupUnselectionConfiguration.areAllMainGroupUnselected ) {
-      this.renderer.setProperty(mainGroupInput, indeterminate, true);
-      this.renderer.setProperty(mainGroupInput, checked, false)
-    }
-
-    else if (isOneChildrenUnselected && maingGroupUnselectionConfiguration.areAllMainGroupUnselected && !areChildrenUnselected) {
-      this.renderer.setProperty(mainGroupInput, indeterminate, true);
-      this.renderer.setProperty(mainGroupInput, checked, false);
+    else if (isOneChildrenUnselected && !mainGroupUnselectionConfiguration.areAllMainGroupUnselected ) {
+      this.renderer.setProperty(mainGroupInput, Constants.indeterminate, true);
+      this.renderer.setProperty(mainGroupInput, Constants.checked, false)
     }
 
-    else if (maingGroupUnselectionConfiguration.isOneMainGroupUnselected && maingGroupUnselectionConfiguration.areAllMainGroupUnselected
+    else if (isOneChildrenUnselected && mainGroupUnselectionConfiguration.areAllMainGroupUnselected && !areChildrenUnselected) {
+      this.renderer.setProperty(mainGroupInput, Constants.indeterminate, true);
+      this.renderer.setProperty(mainGroupInput, Constants.checked, false);
+    }
+
+    else if (mainGroupUnselectionConfiguration.isOneMainGroupUnselected && mainGroupUnselectionConfiguration.areAllMainGroupUnselected
     && isOneChildrenUnselected && areChildrenUnselected) {
-      this.renderer.setProperty(mainGroupInput, indeterminate, false);
-      this.renderer.setProperty(mainGroupInput, checked, false)
+      this.renderer.setProperty(mainGroupInput, Constants.indeterminate, false);
+      this.renderer.setProperty(mainGroupInput, Constants.checked, false)
     }
 
     else {
-      this.renderer.setProperty(mainGroupInput, indeterminate, maingGroupUnselectionConfiguration.areAllMainGroupUnselected);
-      this.renderer.setProperty(mainGroupInput, checked, !maingGroupUnselectionConfiguration.areAllMainGroupUnselected)
+      this.renderer.setProperty(mainGroupInput, Constants.indeterminate, mainGroupUnselectionConfiguration.areAllMainGroupUnselected);
+      this.renderer.setProperty(mainGroupInput, Constants.checked, !mainGroupUnselectionConfiguration.areAllMainGroupUnselected)
     }
 
   }
@@ -186,8 +185,6 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
   selectUnselectMainGroupCheckboxOnModalOpen(group: CustomScopeGroupPreferences[], selectionChildComponent: QueryList<UserScopeChildComponent>) {
     if (group.length === 0) return;
     let childMainGroupCheckbox: HTMLInputElement;
-    const checked = 'checked';
-    const indeterminate = 'indeterminate';
     const groupCheckbox = selectionChildComponent;
     const isAtLeastOneChildrenGroupUnselected = this.isAtLeastOneChildrenOfTheGroupUnselected(group.filter(g => g.customScopePreference))
     const areAllChildrenOfTheGroupUnselected = this.areAllChildrenOfTheGroupUnselected(group.filter(g => g.customScopePreference))
@@ -196,7 +193,6 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
     const mainGroupInputCheckbox = this.getMainGroupInputCheckboxFromChildren();
     const maingGroupUnselectionConfiguration = { areAllMainGroupUnselected, isOneMainGroupUnselected };
     const childrenUnselectedConfiguration = { isAtLeastOneChildrenGroupUnselected, areAllChildrenOfTheGroupUnselected };
-    const inputStates = { checked, indeterminate };
     groupCheckbox.forEach(childComponent => {
       let childInput: HTMLInputElement = this.getChildInput(childComponent);
       if (childInput?.checked && childComponent.scopeChild.some(scope => !scope.selected) ||
@@ -204,9 +200,9 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
         childMainGroupCheckbox = childInput;
       }
     })
-    this.changeMainGroupCheckboxState(mainGroupInputCheckbox, inputStates, maingGroupUnselectionConfiguration, childrenUnselectedConfiguration);
+    this.changeMainGroupCheckboxStateWhenModalOpens(mainGroupInputCheckbox, maingGroupUnselectionConfiguration, childrenUnselectedConfiguration);
     // @ts-ignore
-    this.changeChildrenGroupCheckboxState(isAtLeastOneChildrenGroupUnselected, childMainGroupCheckbox, inputStates)
+    this.changeChildrenGroupCheckboxStateWhenModalOpens(isAtLeastOneChildrenGroupUnselected, childMainGroupCheckbox)
 
     
   }
@@ -219,9 +215,8 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
     return childComponent.childCheckboxRef.nativeElement?.closest('.d-flex')?.children[1]?.children[0]?.children[0];
   }
 
-  private changeMainGroupCheckboxState(
+  private changeMainGroupCheckboxStateWhenModalOpens(
     mainGroupInputCheckbox: HTMLInputElement,
-    inputStates: { checked: string, indeterminate: string },
     mainGroupUnselectedConfiguration: {
       areAllMainGroupUnselected: boolean,
       isOneMainGroupUnselected: boolean
@@ -234,42 +229,41 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
     if (!mainGroupUnselectedConfiguration.areAllMainGroupUnselected && !mainGroupUnselectedConfiguration.isOneMainGroupUnselected
     && childrenUnselectedConfiguration.areAllChildrenOfTheGroupUnselected) {
       setTimeout(() => {
-       this.renderer.setProperty(mainGroupInputCheckbox, inputStates.checked, true) 
+       this.renderer.setProperty(mainGroupInputCheckbox, Constants.checked, true) 
       });
     }
 
     else if (mainGroupUnselectedConfiguration.isOneMainGroupUnselected ||
       childrenUnselectedConfiguration.isAtLeastOneChildrenGroupUnselected && !mainGroupUnselectedConfiguration.areAllMainGroupUnselected) {
       setTimeout(() => {
-        this.renderer.setProperty(mainGroupInputCheckbox, inputStates.checked, false) 
-        this.renderer.setProperty(mainGroupInputCheckbox, inputStates.indeterminate, true) 
+        this.renderer.setProperty(mainGroupInputCheckbox, Constants.checked, false) 
+        this.renderer.setProperty(mainGroupInputCheckbox, Constants.indeterminate, true) 
       });
     }
 
     else {
-      this.renderer.setProperty(mainGroupInputCheckbox, inputStates.checked, false)
+      this.renderer.setProperty(mainGroupInputCheckbox, Constants.checked, false)
     }
 
   }
 
-  private changeChildrenGroupCheckboxState(isAtLeastOneChildrenGroupUnselected: boolean,
-    childMainGroupCheckbox: HTMLInputElement,
-    inputStates: { checked: string, indeterminate: string }) {
+  private changeChildrenGroupCheckboxStateWhenModalOpens(isAtLeastOneChildrenGroupUnselected: boolean,
+    childMainGroupCheckbox: HTMLInputElement) {
     if (!childMainGroupCheckbox) return;
     if (!isAtLeastOneChildrenGroupUnselected) {
       setTimeout(() => {
-        this.renderer.setProperty(childMainGroupCheckbox, inputStates.checked, true)
+        this.renderer.setProperty(childMainGroupCheckbox, Constants.checked, true)
       });
     }
 
     else if (isAtLeastOneChildrenGroupUnselected) {
       setTimeout(() => {
-        this.renderer.setProperty(childMainGroupCheckbox, inputStates.indeterminate, true)
+        this.renderer.setProperty(childMainGroupCheckbox, Constants.indeterminate, true)
       });
     }
 
     else {
-      this.renderer.setProperty(childMainGroupCheckbox, inputStates.checked, false)
+      this.renderer.setProperty(childMainGroupCheckbox, Constants.checked, false)
     }
   }
 

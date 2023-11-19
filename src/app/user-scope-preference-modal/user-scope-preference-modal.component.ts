@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { EndpointService } from '../api/endpoint.service';
-import { CustomScopeGroupPreferences, UserScopePreference } from '../api/scope';
+import { CustomScopeDto, CustomScopeGroupPreferences, UserScopePreference } from '../api/scope';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -35,8 +35,26 @@ export class UserScopePreferenceModalComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  getSelectedCustomScopes() {
-    
+  getSelectedCustomScopes(selectedScopeGroup: CustomScopeGroupPreferences[]): { customScopes: CustomScopeDto []} {
+    let result: { customScopes: CustomScopeDto[] } = { customScopes: [] };
+    let obj : { customScopes: CustomScopeDto[] } = { customScopes: [] };
+
+    let selectedCustomScopes = selectedScopeGroup.reduce((previousCustomScopes: { customScopes: CustomScopeDto[] }, customScopeGroup: CustomScopeGroupPreferences) => {
+      if (customScopeGroup.children.length) {
+        let selectedChildrenCustomScopes = this.getSelectedCustomScopes(customScopeGroup.children);
+        result = { ...selectedChildrenCustomScopes };
+      }
+      if (customScopeGroup.customScopePreference.length) {
+        const selectedCustomScopes = customScopeGroup.customScopePreference.filter(scope => scope.selected).map(({ id, name }) => ({ id, name }));
+        previousCustomScopes.customScopes.push(...selectedCustomScopes);
+      }
+      return previousCustomScopes
+    }, { customScopes: [] });
+
+    obj.customScopes.push(...selectedCustomScopes.customScopes);
+    obj.customScopes.push(...result.customScopes);
+
+    return obj;
   }
 
 }

@@ -20,3 +20,8 @@ export interface CustomScopePreference {
   name: string;
   selected: boolean;
 }
+
+export interface CustomScopeDto {
+  id: number;
+  name: string;
+}
