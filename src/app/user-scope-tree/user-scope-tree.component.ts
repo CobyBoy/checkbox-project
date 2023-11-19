@@ -31,7 +31,7 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
 
   ngAfterViewInit() {
     if (this.customScopeGroupPreferences && this.selectionChildComponent) {
-      this.selectUnselectMainGroupCheckboxOnModalOpen(this.customScopeGroupPreferences, this.selectionChildComponent)
+      //this.selectUnselectMainGroupCheckboxOnModalOpen(this.customScopeGroupPreferences, this.selectionChildComponent)
     } 
   }
 
@@ -53,8 +53,8 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
   }
 
   onSelectChildCheckboxChange(event: ElementRef<any>,group: CustomScopeGroupPreferences) {
-    this.selectUnselectChildGroupCheckbox(event, group);
-    this.selectUnselectMainGroupCheckbox();
+    //this.selectUnselectChildGroupCheckbox(event, group);
+    //this.selectUnselectMainGroupCheckbox();
   }
 
   private selectUnselectChildGroupCheckbox(event: ElementRef<any>, group: CustomScopeGroupPreferences) {

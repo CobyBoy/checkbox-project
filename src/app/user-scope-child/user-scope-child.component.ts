@@ -31,6 +31,7 @@ export class UserScopeChildComponent implements AfterContentChecked {
   }
   
   onChildCheckboxChange(value: boolean): boolean {
+    console.log('child checkbox compoennet changged', value)
     this.selectChildCheckboxValue.emit(this.elementRef);
     return value;
   }

@@ -1,6 +1,8 @@
 <div *ngFor="let group of customScopeGroupPreferences; trackBy: trackByFn">
   <accordion style="width: 100%;" [isAnimated]="true">
-    <div style="display: flex;" class="d-flex" appGroup>
+    <div style="display: flex;" 
+    class="d-flex" 
+    appGroup>
       <accordion-group heading="{{ group.name }}" style="width: 100%;">
         <ng-container *ngIf="group.children">
           <app-user-scope-child
