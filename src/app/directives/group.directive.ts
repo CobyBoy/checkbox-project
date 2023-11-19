@@ -1,13 +1,17 @@
 import { Directive, ElementRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[appIndeterminate]'
+  selector: '[appGroup]'
 })
-export class IndeterminateDirective {
+export class GroupDirective {
 
   constructor(private elementRef: ElementRef, private viewContainer: ViewContainerRef) {
-    console.log(elementRef.nativeElement.closest('.accordion-group'));
-    console.log(viewContainer)
-   }
+    
+  }
+  
+  ngOnInit() {
+    console.log(this.elementRef.nativeElement);
+    console.log(this.viewContainer.element)
+  }
 
 }

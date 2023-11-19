@@ -46,8 +46,8 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
 
   onCheckboxChange(value: boolean, group: CustomScopeGroupPreferences): boolean {
     group.selected = value;
-    this.updateChildrenCheckboxWithNewValue(value, group);
-    this.selectUnselectMainGroupCheckbox();
+    //this.updateChildrenCheckboxWithNewValue(value, group);
+    //this.selectUnselectMainGroupCheckbox();
     this.cdRef.detectChanges();
     return value;
   }
@@ -97,17 +97,15 @@ export class UserScopeTreeComponent implements AfterContentChecked, AfterViewIni
   }
 
   private selectUnselectMainGroupCheckbox() {
-    const isOneMainGroupUnselected = this.customScopeGroupPreferences?.some(g => !g.selected);
-    const areAllMainGroupUnselected = this.customScopeGroupPreferences?.every(g => !g.selected);
-    // @ts-ignore
+    if (!this.customScopeGroupPreferences) return;
+    const isOneMainGroupUnselected = this.customScopeGroupPreferences.some(g => !g.selected);
+    const areAllMainGroupUnselected = this.customScopeGroupPreferences.every(g => !g.selected);
     const isOneChildrenUnselected = this.isAtLeastOneChildrenOfTheGroupUnselected(this.customScopeGroupPreferences);
-    // @ts-ignore
     const areChildrenUnselected = this.areAllChildrenOfTheGroupUnselected(this.customScopeGroupPreferences);
     const mainGroupCheckbox = this.elementRef.nativeElement.offsetParent?.parentElement?.nextSibling;
     const maingGroupUnselectionConfiguration = { isOneMainGroupUnselected, areAllMainGroupUnselected };
     if (mainGroupCheckbox) {
       const mainGroupInput = mainGroupCheckbox?.children[0]?.children[0] as HTMLInputElement;
-      // @ts-ignore
       this.updateGroupCheckboxProperties(maingGroupUnselectionConfiguration, isOneChildrenUnselected, areChildrenUnselected, mainGroupInput)
     }
     this.cdRef.markForCheck();

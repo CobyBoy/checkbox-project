@@ -4,7 +4,7 @@ export const usercopeGroupPreference: UserScopePreference[] = [
   {
     id: 1,
     teamName: 'Custom Group Scope',
-    selected: true,
+    selected: false,
     customScopeGroupPreferences: [
       {
         id: 3434,
@@ -83,7 +83,7 @@ export const usercopeGroupPreference: UserScopePreference[] = [
     ]
   },
   {
-    id: 1,
+    id: 2,
     teamName: 'Custom Group Scope2',
     selected: true,
     customScopeGroupPreferences: [
@@ -108,7 +108,18 @@ export const usercopeGroupPreference: UserScopePreference[] = [
             id: 997,
             name: 'Children scope group2',
             selected: true,
-            customScopePreference: [],
+            customScopePreference: [
+              {
+                id: 858,
+                name: "North",
+                selected: true
+              },
+              {
+                id: 500,
+                name: "South",
+                selected: true
+              }
+            ],
             children: []
           }
         ]

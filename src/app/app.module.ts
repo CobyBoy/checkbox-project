@@ -8,11 +8,13 @@ import { UserScopeTreeComponent } from './user-scope-tree/user-scope-tree.compon
 import { UserScopeChildComponent } from './user-scope-child/user-scope-child.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { LabelComponent } from './label/label.component';
-import { IndeterminateDirective } from './indeterminate.directive';
+import { GroupDirective } from './directives/group.directive';
 import { UserScopePreferenceModalComponent } from './user-scope-preference-modal/user-scope-preference-modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SelectComponent } from './select/select.component';
+import { CheckboxDirective } from './directives/checkbox.directive';
+import { ChildrenCheckboxDirective } from './directives/children-checkbox.directive';
 
 @NgModule({
   declarations: [
@@ -21,10 +23,12 @@ import { SelectComponent } from './select/select.component';
     UserScopeChildComponent,
     CheckboxComponent,
     LabelComponent,
-    IndeterminateDirective,
+    GroupDirective,
     UserScopePreferenceModalComponent,
     DropdownComponent,
-    SelectComponent
+    SelectComponent,
+    CheckboxDirective,
+    ChildrenCheckboxDirective
   ],
   imports: [
     BrowserModule,

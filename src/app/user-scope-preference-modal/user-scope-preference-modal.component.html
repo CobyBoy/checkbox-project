@@ -4,7 +4,13 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <app-select></app-select>
+      <app-select
+      [id]="'selectedTeam'"
+      [value]="selectedTeam?.teamName"
+      [options]="teamList"
+      [bind_label]="'teamName'"
+      (valueChange)="onSelectionChange($event)"
+      ></app-select>
     </div>
     <div class="row">
       <app-user-scope-tree [customScopeGroupPreferences]="customScopeGroupPreferences"></app-user-scope-tree>

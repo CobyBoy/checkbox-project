@@ -5,6 +5,7 @@
       <app-checkbox 
       id="{{ generateRandomId}}" 
       [checked]="customScope.selected"
+      appChildrenCheckbox
       (checkedChange)="onChildCheckboxChange($event)"
       ></app-checkbox>
     </div>

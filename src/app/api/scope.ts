@@ -21,6 +21,12 @@ export interface CustomScopePreference {
   selected: boolean;
 }
 
+export interface teamScopeDto {
+  id: number;
+  name: string;
+  customScopes: CustomScopeDto[];
+}
+
 export interface CustomScopeDto {
   id: number;
   name: string;

@@ -1,6 +1,6 @@
 <div *ngFor="let group of customScopeGroupPreferences; trackBy: trackByFn">
   <accordion style="width: 100%;" [isAnimated]="true">
-    <div style="display: flex;" class="d-flex">
+    <div style="display: flex;" class="d-flex" appGroup>
       <accordion-group heading="{{ group.name }}" style="width: 100%;">
         <ng-container *ngIf="group.children">
           <app-user-scope-child
@@ -15,9 +15,13 @@
         </ng-container>
         
       </accordion-group>
-        <app-checkbox id="{{ generateRandomId }}" [checked]="group.selected" 
-        appIndeterminate
-        (checkedChange)="onCheckboxChange($event, group)"></app-checkbox>
+      <app-checkbox 
+        appCheckbox
+        id="{{ generateRandomId }}" 
+        [checked]="group.selected" 
+        
+        (checkedChange)="onCheckboxChange($event, group)">
+      </app-checkbox>
       
     </div>
   </accordion>

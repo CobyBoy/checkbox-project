@@ -1,1 +1,25 @@
 <p>select works!</p>
+<div *ngIf="helperText" [id]="'helper' + id">
+  {{ helperText }}
+</div>
+<div>
+  <select 
+  [name]="name" 
+  [id]="id"
+  [multiple]="multiple"
+  [disabled]="disabled"
+  (change)="onChange($event)"
+  (blur)="onBlur($event)"
+  >
+  <option *ngIf="placeholder" value="" disabled selected hidden>
+      {{placeholder}}
+  </option>
+  <option
+  *ngFor="let option of options"
+  [value]="!!bind_label && option[bind_label] ? option[bind_label] : option"
+  [selected]="isSelected(option)"
+  >
+    {{ !!bind_label && option[bind_label] ? option[bind_label] :  option }}
+  </option>
+  </select>
+</div>
