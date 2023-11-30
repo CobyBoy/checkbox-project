@@ -33,4 +33,8 @@ export class CheckboxComponent {
     this.checkedChange.emit(target.checked);
   }
 
+  onBlur() {
+    
+  }
+
 }

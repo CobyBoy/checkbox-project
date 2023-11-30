@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CustomScopePreference } from '../api/scope';
 import { UniqueIdService } from '../unique-id.service';
 
@@ -7,22 +7,29 @@ import { UniqueIdService } from '../unique-id.service';
   templateUrl: './user-scope-child.component.html',
   styleUrls: ['./user-scope-child.component.scss']
 })
-export class UserScopeChildComponent implements AfterContentChecked {
+export class UserScopeChildComponent implements AfterContentChecked, AfterContentInit {
   @Input() scopeChild!: CustomScopePreference[];
   @Output() selectChildCheckboxValue = new EventEmitter<ElementRef>();
   @ViewChild('childCheckboxRef', { static: false }) childCheckboxRef!: ElementRef;
   id: string = '';
+  checkboxIds: string[] = [];
 
   constructor(private cdRef: ChangeDetectorRef,private uniqueIdService:UniqueIdService, private elementRef: ElementRef) { }
 
+  ngOnInit() {
+    this.id = this.uniqueIdService.generateRandomId()
+}
 
-  
-  public get generateRandomId() : string {
-    return crypto.randomUUID().slice(0, 10);
+  generateCheckboxIds(): void {
+    this.checkboxIds = this.scopeChild.map(() => this.uniqueIdService.generateRandomId().slice(0, 10));
+  }
+
+  ngAfterContentInit() {
+    this.generateCheckboxIds();
   }
 
   ngAfterContentChecked() {
-    this.id = this.uniqueIdService.generateRandomId()
+    
     this.cdRef.detectChanges();
   }
 

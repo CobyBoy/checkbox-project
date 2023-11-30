@@ -1,9 +1,9 @@
 <p>user-scope-child works!</p>
-<div *ngFor="let customScope of scopeChild; trackBy: trackByFn" #childCheckboxRef>
+<div *ngFor="let customScope of scopeChild; let i = index; trackBy: trackByFn" #childCheckboxRef>
   <div style="display: flex" class="d-flex">
     <div>
       <app-checkbox 
-      id="{{ generateRandomId}}" 
+      id="{{ checkboxIds[i] }}" 
       [checked]="customScope.selected"
       appChildrenCheckbox
       (checkedChange)="onChildCheckboxChange($event)"

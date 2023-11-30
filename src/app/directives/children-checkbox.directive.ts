@@ -7,7 +7,7 @@ export class ChildrenCheckboxDirective {
   @HostListener('change', ['$event']) onChange(event: Event) {
     const inputCheckbox = event.target as HTMLInputElement;
     console.log('child checkbox has changed', inputCheckbox)
-    this.set();
+    this.setGroupInput();
     this.changeGroupCheckboxState(inputCheckbox);
     
   }
@@ -23,7 +23,7 @@ export class ChildrenCheckboxDirective {
     this.getNativeElement();
   }
 
-  set() {
+  setGroupInput() {
     const groupCheckboxList: NodeList | undefined = this.getAccordionThatHasAppCheckboxComponent()?.querySelectorAll('app-checkbox');
     if (groupCheckboxList) {
       this.groupAppCheckbox = groupCheckboxList[groupCheckboxList?.length - 1] as HTMLElement;
@@ -49,6 +49,7 @@ export class ChildrenCheckboxDirective {
   }
 
   getGroupInputsList(): NodeList {
+    console.log( this.elementRef.nativeElement.closest('app-user-scope-tree').querySelectorAll("input[type='checkbox']"))
     return this.elementRef.nativeElement.closest('app-user-scope-child').querySelectorAll("input[type='checkbox']");
   }
 

@@ -1,5 +1,6 @@
 <div>
-  <input type="checkbox" 
+  <input 
+    type="checkbox" 
     [id]="id"
     [name]="name || id"
     [checked]="checked" 
@@ -8,6 +9,7 @@
     [attr.aria-invalid]="invalid"
     [attr.aria-checked]="indeterminate ? 'mixed' : 'checked'"
     [attr.aria-required]="required ? required: null"
+    (blur)="onBlur()"
     (change)="onChange($event)">
     <app-label [for]="id">{{ label }}</app-label>
 </div>
